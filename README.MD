@@ -65,3 +65,11 @@ Application -> right click -> run
 
 ### Manual Test
 You can use the swagger-ui to call every endpoint on http://localhost:8080/swagger-ui/#/
+
+# Notes
+* The project was build under the idea of a car applications.
+* Regarding point 5 from the test (Hacer end-point de consulta) I did an endpoint to get an application for the id, 
+because the create endpoint is returning the car application with the id, so instead of searching by age, color, model, 
+I thought would be better to get only by id, maybe I misunderstood but since the exercise said that is with the information 
+from the creation, and because we have the id there, then I thought that.  
+* I didn't update the infrastructure packages at all because it's just for mocking the external services.

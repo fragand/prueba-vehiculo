@@ -3,6 +3,7 @@ package com.ing.interview.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ing.interview.infrastructure.dto.OrderStatus;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 @Builder
 @Getter
 @Setter
+@EqualsAndHashCode
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CarApplicationResponse {
     private Long id;

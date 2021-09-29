@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 public class CollectionConverter {
-    private ConversionService conversionService;
+    private final ConversionService conversionService;
 
     @Autowired
     public CollectionConverter(ConversionService conversionService){

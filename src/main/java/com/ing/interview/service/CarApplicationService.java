@@ -4,7 +4,6 @@ import com.ing.interview.converter.CollectionConverter;
 import com.ing.interview.exception.BadRequestErrorException;
 import com.ing.interview.exception.BusinessValidationException;
 import com.ing.interview.exception.NotFoundException;
-import com.ing.interview.infrastructure.CarApplicationRepository;
 import com.ing.interview.infrastructure.CarAvailabilityRestConnector;
 import com.ing.interview.infrastructure.ColorPickerRestConnector;
 import com.ing.interview.infrastructure.InsuranceRestConnector;
@@ -12,13 +11,13 @@ import com.ing.interview.infrastructure.OrderStatusRestConnector;
 import com.ing.interview.model.CarApplication;
 import com.ing.interview.model.CarApplicationRequest;
 import com.ing.interview.model.CarApplicationResponse;
+import com.ing.interview.repository.CarApplicationRepository;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -56,7 +55,7 @@ public class CarApplicationService {
     }
 
     private void checkInsurance(CarApplication carApplication) {
-        if(!insuranceRestConnector.isEligible(carApplication.getAge(), carApplication.getModel().toUpperCase(Locale.ROOT))){
+        if(!insuranceRestConnector.isEligible(carApplication.getAge(), carApplication.getModel())){
             throw new BadRequestErrorException("car.notEligible.insurance", "The age and model of the car does not apply for insurance.");
         }
     }
@@ -64,7 +63,7 @@ public class CarApplicationService {
     private void checkCarColor(CarApplication carApplication) {
         AtomicReference<String> color = new AtomicReference<>(carApplication.getColor());
         if(Strings.isBlank(color.get())){
-            colorPickerRestConnector.pickColor(carApplication.getModel().toUpperCase(Locale.ROOT))
+            colorPickerRestConnector.pickColor(carApplication.getModel())
                     .ifPresent(color::set);
 
         }
@@ -76,8 +75,8 @@ public class CarApplicationService {
     }
 
     private void checkIfCarIsAvailable(CarApplication carApplication) {
-        boolean available = carAvailabilityRestConnector.available(carApplication.getColor().toUpperCase(Locale.ROOT),
-                carApplication.getModel().toUpperCase(Locale.ROOT));
+        boolean available = carAvailabilityRestConnector.available(carApplication.getColor(),
+                carApplication.getModel());
         if(!available){
             throw new BusinessValidationException("car.notAvailable", "The color and model has not availability.");
         }
@@ -93,7 +92,7 @@ public class CarApplicationService {
     }
 
     public List<CarApplicationResponse> getCarApplicationByColor(String color) {
-        List<CarApplication> carApplications = carApplicationRepository.findCarApplicationsByColor(color);
+        List<CarApplication> carApplications = carApplicationRepository.findCarApplicationsByColorIgnoreCase(color);
         List<CarApplicationResponse> carApplicationResponses = collectionConverter.fromListToList(carApplications, CarApplication.class, CarApplicationResponse.class);
         carApplicationResponses.forEach(carApplicationResponse ->
                 carApplicationResponse.setOrderStatus(orderStatusRestConnector.checkOrderStatus(carApplicationResponse.getId())));

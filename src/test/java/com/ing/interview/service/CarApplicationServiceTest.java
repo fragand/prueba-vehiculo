@@ -4,7 +4,6 @@ import com.ing.interview.converter.CollectionConverter;
 import com.ing.interview.exception.BadRequestErrorException;
 import com.ing.interview.exception.BusinessValidationException;
 import com.ing.interview.exception.NotFoundException;
-import com.ing.interview.infrastructure.CarApplicationRepository;
 import com.ing.interview.infrastructure.CarAvailabilityRestConnector;
 import com.ing.interview.infrastructure.ColorPickerRestConnector;
 import com.ing.interview.infrastructure.InsuranceRestConnector;
@@ -13,6 +12,7 @@ import com.ing.interview.infrastructure.dto.OrderStatus;
 import com.ing.interview.model.CarApplication;
 import com.ing.interview.model.CarApplicationRequest;
 import com.ing.interview.model.CarApplicationResponse;
+import com.ing.interview.repository.CarApplicationRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -275,7 +275,7 @@ class CarApplicationServiceTest {
         List<CarApplication> carApplications = Collections.singletonList(carApplication);
         List<CarApplicationResponse> carApplicationResponses = Collections.singletonList(carApplicationResponse);
 
-        when(carApplicationRepository.findCarApplicationsByColor(COLOR)).thenReturn(carApplications);
+        when(carApplicationRepository.findCarApplicationsByColorIgnoreCase(COLOR)).thenReturn(carApplications);
         when(collectionConverter.fromListToList(carApplications,CarApplication.class, CarApplicationResponse.class))
                 .thenReturn(carApplicationResponses);
         when(orderStatusRestConnector.checkOrderStatus(ID)).thenReturn(carApplicationResponse.getOrderStatus());
@@ -285,7 +285,7 @@ class CarApplicationServiceTest {
         List<CarApplicationResponse> carApplicationByColor = underTest.getCarApplicationByColor(COLOR);
 
         //THEN
-        verify(carApplicationRepository, times(1)).findCarApplicationsByColor(COLOR);
+        verify(carApplicationRepository, times(1)).findCarApplicationsByColorIgnoreCase(COLOR);
         verify(collectionConverter, times(1)).fromListToList(carApplications, CarApplication.class, CarApplicationResponse.class);
         verify(orderStatusRestConnector, times(1)).checkOrderStatus(ID);
         assertEquals(carApplicationResponses, carApplicationByColor);

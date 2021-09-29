@@ -1,11 +1,15 @@
 package com.ing.interview.model;
 
-import javax.validation.constraints.NotBlank;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
 
-import lombok.*;
+import javax.validation.constraints.NotBlank;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class CarApplicationRequest {
 
     @NonNull

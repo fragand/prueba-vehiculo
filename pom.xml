@@ -8,15 +8,18 @@
     <version>2.5.1</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
+
   <groupId>com.ing</groupId>
   <artifactId>interview</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>interview</name>
   <description>Demo project for Easy Finance ING</description>
+
   <properties>
     <java.version>1.8</java.version>
-    <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
+    <springfox.version>3.0.0</springfox.version>
   </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -34,7 +37,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
@@ -46,15 +48,15 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-boot-starter</artifactId>
+      <version>${springfox.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-boot-starter</artifactId>
-      <version>3.0.0</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -74,5 +76,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>
